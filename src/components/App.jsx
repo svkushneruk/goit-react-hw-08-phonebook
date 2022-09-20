@@ -1,5 +1,6 @@
 import { Routes, Route } from 'react-router-dom';
 
+import Navbar from './Navbar/Navbar';
 import HomePage from 'pages/HomePage/HomePage';
 import RegisterPage from 'pages/RegisterPage/RegisterPage';
 import LoginPage from 'pages/LoginPage/LoginPage';
@@ -7,12 +8,11 @@ import ContactsPage from 'pages/ContactsPage/ContactsPage';
 import NotFoundPage from 'pages/NoFoundPage/NotFoundPage';
 
 import Container from './Container';
-import AppBar from './AppBar/AppBar';
 
 const App = () => {
   return (
     <Container>
-      <AppBar />
+      <Navbar />
 
       <Routes>
         <Route path="/" element={<HomePage />} />

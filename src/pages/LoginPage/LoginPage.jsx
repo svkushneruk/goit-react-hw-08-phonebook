@@ -1,68 +1,30 @@
-import { useState } from 'react';
-// import { useDispatch } from 'react-redux';
-// import { authOperations } from '../redux/auth';
+import { useDispatch, useSelector } from 'react-redux';
+import { login } from 'redux/auth/auth-operations';
 
-const styles = {
-  form: {
-    width: 320,
-  },
-  label: {
-    display: 'flex',
-    flexDirection: 'column',
-    marginBottom: 15,
-  },
-};
+import { getAuthError, isAuth } from './../../redux/auth/auth-selectors';
+import { Navigate } from 'react-router-dom';
+import LoginForm from 'components/LoginForm/LoginForm';
 
-export default function LoginView() {
-  // const dispatch = useDispatch();
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+const LoginPage = () => {
+  const dispatch = useDispatch();
+  const { status, message } = useSelector(getAuthError);
 
-  const handleChange = ({ target: { name, value } }) => {
-    switch (name) {
-      case 'email':
-        return setEmail(value);
-      case 'password':
-        return setPassword(value);
-      default:
-        return;
-    }
+  const isLogin = useSelector(isAuth);
+
+  const onLogin = data => {
+    dispatch(login(data));
   };
 
-  const handleSubmit = e => {
-    e.preventDefault();
-    // dispatch(authOperations.logIn({ email, password }));
-    setEmail('');
-    setPassword('');
-  };
-
+  if (isLogin) {
+    return <Navigate to="/contacts" />;
+  }
   return (
     <div>
       <h1>Страница логина</h1>
-
-      <form onSubmit={handleSubmit} style={styles.form} autoComplete="off">
-        <label style={styles.label}>
-          Почта
-          <input
-            type="email"
-            name="email"
-            value={email}
-            onChange={handleChange}
-          />
-        </label>
-
-        <label style={styles.label}>
-          Пароль
-          <input
-            type="password"
-            name="password"
-            value={password}
-            onChange={handleChange}
-          />
-        </label>
-
-        <button type="submit">Войти</button>
-      </form>
+      <LoginForm onSubmit={onLogin} />
+      {status && <p style={{ color: 'red' }}>{message}</p>}
     </div>
   );
-}
+};
+
+export default LoginPage;

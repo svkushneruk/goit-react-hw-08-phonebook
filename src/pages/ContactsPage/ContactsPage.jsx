@@ -1,57 +1,62 @@
-import React, { useState } from 'react';
-import { Notify } from 'notiflix/build/notiflix-notify-aio';
-import {
-  useFetchContactsQuery,
-  useCreateContactMutation,
-} from 'redux/contacts/contactsSlice';
+import { useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { changeFilterValue } from 'redux/filter/filter-actions';
+import { getFilterValue } from 'redux/filter/filter-selectors';
+import { getFilteredContacts } from 'redux/contacts/contacts-selectors';
 import ContactForm from 'components/ContactForm/ContactForm';
 import { Filter } from 'components/Filter/Filter';
 import { ContactList } from 'components/ContactList/ContactList';
+import css from 'components/App.module.css';
+import { fetchContacts, addContact } from 'redux/contacts/contacts-operations';
 
 const ContactsPage = () => {
-  const [filter, setFilter] = useState('');
-  const { data, error, isError } = useFetchContactsQuery();
-  const [createContact] = useCreateContactMutation();
+  const contacts = useSelector(getFilteredContacts);
+  const filter = useSelector(getFilterValue);
 
-  const handleAddContact = data => {
-    if (checkName(data.name)) {
-      alert(`${data.name} is already in contacts`);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(fetchContacts());
+  }, [dispatch]);
+
+  const handleAddContact = payload => {
+    if (checkName(payload.name)) {
+      alert(`${payload.name} is already in contacts`);
       return;
     } else {
-      createContact(data);
-      Notify.success('Contact added');
+      dispatch(addContact(payload));
     }
   };
 
-  const getVisiableContacts = () => {
-    return data.filter(({ name }) =>
-      name.toLowerCase().includes(filter.toLowerCase())
-    );
+  const removeContact = contactId => {
+    dispatch(removeContact(contactId));
+  };
+
+  const onChangeFilterValue = e => {
+    const { value } = e.target;
+    dispatch(changeFilterValue(value));
   };
 
   const checkName = filterName => {
-    const arr = data.filter(({ name }) => name === filterName);
+    const arr = contacts.filter(({ name }) => name === filterName);
     if (arr.length > 0) {
       return true;
     }
     return false;
   };
+
   return (
-    <div>
+    <div className={css.app}>
       <h1>Phonebook</h1>
       <ContactForm onSubmit={handleAddContact} />
 
       <h2>Contacts</h2>
 
-      <Filter
-        filterValue={filter}
-        onChange={e => setFilter(e.currentTarget.value)}
-      />
+      <Filter filterValue={filter} onChange={onChangeFilterValue} />
 
-      {isError && <p>{error.data}</p>}
-      {data && data.length === 0 && <p>No any contacts</p>}
-
-      {data && <ContactList contacts={getVisiableContacts().reverse()} />}
+      {contacts && (
+        <ContactList contacts={contacts} onDeleteContact={removeContact} />
+      )}
     </div>
   );
 };

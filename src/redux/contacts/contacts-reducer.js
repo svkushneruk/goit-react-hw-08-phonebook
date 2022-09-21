@@ -1,54 +1,51 @@
-import { combineReducers } from 'redux';
 import { createReducer } from '@reduxjs/toolkit';
-import {
-  addContactRequest,
-  addContactSuccess,
-  addContactError,
-  deleteContactRequest,
-  deleteContactSuccess,
-  deleteContactError,
-  changeFilter,
-  toggleCompletedRequest,
-  toggleCompletedSuccess,
-  toggleCompletedError,
-  fetchContactsRequest,
-  fetchContactsSuccess,
-  fetchContactsError,
-} from './Contacts-actions';
 
-const items = createReducer([], {
-  [fetchContactsSuccess]: (_, { payload }) => payload,
-  [addContactSuccess]: (state, { payload }) => [...state, payload],
-  [deleteContactSuccess]: (state, { payload }) =>
-    state.filter(({ id }) => id !== payload),
-  [toggleCompletedSuccess]: (state, { payload }) =>
-    state.map(contact => (contact.id === payload.id ? payload : contact)),
+import actions from './contacts-actions';
+
+const initialState = {
+  items: [{ id: '1', name: 'Alex', number: '1234567' }],
+  loading: false,
+  error: null,
+};
+
+const contactsReducer = createReducer(initialState, {
+  [actions.fetchContactsLoading]: store => {
+    store.loading = true;
+    store.error = null;
+  },
+  [actions.fetchContactsSuccess]: (store, { payload }) => {
+    store.items = payload;
+    store.loading = false;
+  },
+  [actions.fetchContactsError]: (store, { payload }) => {
+    store.loading = false;
+    store.error = payload;
+  },
+  [actions.addContactLoading]: (store, { payload }) => {
+    store.loading = true;
+    store.error = null;
+  },
+  [actions.addContactSuccess]: (store, { payload }) => ({
+    ...store,
+    items: [...store.items, payload],
+  }),
+  [actions.addContactError]: (store, { payload }) => {
+    store.error = payload;
+    store.loading = false;
+  },
+
+  [actions.removeContactLoading]: store => {
+    store.loading = true;
+    store.error = null;
+  },
+  [actions.removeContactSuccess]: (store, { payload }) => {
+    const newContacts = store.items.filter(({ id }) => id !== payload);
+    return { ...store, items: newContacts };
+  },
+  [actions.removeContactError]: (store, { payload }) => {
+    store.error = payload;
+    store.loading = false;
+  },
 });
 
-const loading = createReducer(false, {
-  [fetchContactsRequest]: () => true,
-  [fetchContactsSuccess]: () => false,
-  [fetchContactsError]: () => false,
-  [addContactRequest]: () => true,
-  [addContactSuccess]: () => false,
-  [addContactError]: () => false,
-  [deleteContactRequest]: () => true,
-  [deleteContactSuccess]: () => false,
-  [deleteContactError]: () => false,
-  [toggleCompletedRequest]: () => true,
-  [toggleCompletedSuccess]: () => false,
-  [toggleCompletedError]: () => false,
-});
-
-const filter = createReducer('', {
-  [changeFilter]: (_, { payload }) => payload,
-});
-
-const error = createReducer(null, {});
-
-export default combineReducers({
-  items,
-  filter,
-  loading,
-  error,
-});
+export default contactsReducer;

@@ -1,33 +1,38 @@
 import { createAction } from '@reduxjs/toolkit';
+import { nanoid } from 'nanoid';
 
-export const fetchContactsRequest = createAction(
-  'contacts/fetchContactsRequest'
-);
-export const fetchContactsSuccess = createAction(
-  'contacts/fetchContactsSuccess'
-);
-export const fetchContactsError = createAction('contacts/fetchContactsError');
+const fetchContactsLoading = createAction('contacts/fetch/loading');
+const fetchContactsSuccess = createAction('contacts/fetch/success');
+const fetchContactsError = createAction('contacts/fetch/error');
 
-export const addContactRequest = createAction('contacts/addContactRequest');
-export const addContactsuccess = createAction('contacts/addContactsuccess');
-export const addContactError = createAction('contacts/addContactError');
+const addContactLoading = createAction('contacts/add/loading');
+const addContactSuccess = createAction('contacts/add/success');
+const addContactError = createAction('contacts/add/error');
 
-export const deleteContactRequest = createAction(
-  'contacts/deleteContactRequest'
-);
-export const deleteContactsuccess = createAction(
-  'contacts/deleteContactsuccess'
-);
-export const deleteContactError = createAction('contacts/deleteContactError');
+const removeContactLoading = createAction('contacts/remove/loading');
+const removeContactSuccess = createAction('contacts/remove/success');
+const removeContactError = createAction('contacts/remove/error');
 
-export const toggleCompletedRequest = createAction(
-  'contacts/toggleCompletedRequest'
-);
-export const toggleCompletedSuccess = createAction(
-  'contacts/toggleCompletedSuccess'
-);
-export const toggleCompletedError = createAction(
-  'contacts/toggleCompletedError'
-);
+const actions = {
+  fetchContactsLoading,
+  fetchContactsSuccess,
+  fetchContactsError,
+  addContactLoading,
+  addContactSuccess,
+  addContactError,
+  removeContactLoading,
+  removeContactSuccess,
+  removeContactError,
+};
 
-export const changeFilter = createAction('contacts/changeFilter');
+export default actions;
+
+export const addContact = createAction('contacts/add', data => {
+  return {
+    payload: {
+      ...data,
+      id: nanoid(),
+    },
+  };
+});
+export const deleteContact = createAction('contacts/delete');

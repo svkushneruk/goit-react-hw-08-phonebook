@@ -1,23 +1,17 @@
 import { useDispatch, useSelector } from 'react-redux';
-import { login } from 'redux/auth/auth-operations';
 
-import { getAuthError, isAuth } from './../../redux/auth/auth-selectors';
-import { Navigate } from 'react-router-dom';
+import { getAuthError } from './../../redux/auth/auth-selectors';
+import { login } from 'redux/auth/auth-operations';
 import LoginForm from 'components/LoginForm/LoginForm';
 
 const LoginPage = () => {
   const dispatch = useDispatch();
   const { status, message } = useSelector(getAuthError);
 
-  const isLogin = useSelector(isAuth);
-
   const onLogin = data => {
     dispatch(login(data));
   };
 
-  if (isLogin) {
-    return <Navigate to="/contacts" />;
-  }
   return (
     <div>
       <h1>Страница логина</h1>

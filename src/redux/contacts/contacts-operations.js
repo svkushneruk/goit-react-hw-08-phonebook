@@ -1,75 +1,62 @@
-import axios from 'axios';
-import {
-  addContactRequest,
-  addContactSuccess,
-  addContactError,
-  deleteContactRequest,
-  deleteContactSuccess,
-  deleteContactError,
-  toggleCompletedRequest,
-  toggleCompletedSuccess,
-  toggleCompletedError,
-  fetchContactsRequest,
-  fetchContactsSuccess,
-  fetchContactsError,
-} from './contacts-actions';
+import contactsApi from 'shared/api/contacts';
+import actions from './contacts-actions';
 
-// GET @ /tasks
-const fetchContacts = () => async dispatch => {
-  dispatch(fetchContactsRequest());
-
-  try {
-    const { data } = await axios.get('/tasks');
-
-    dispatch(fetchContactsSuccess(data));
-  } catch (error) {
-    dispatch(fetchContactsError(error.message));
-  }
-};
-
-// POST @ /tasks
-const addContact = description => dispatch => {
-  const contact = {
-    description,
-    completed: false,
+export const fetchContacts = () => {
+  const func = async dispatch => {
+    try {
+      dispatch(actions.fetchContactsLoading());
+      const data = await contactsApi.getContacts();
+      dispatch(actions.fetchContactsSuccess(data));
+    } catch (error) {
+      const { message } = error;
+      dispatch(actions.fetchContactsError(message));
+    }
   };
 
-  dispatch(addContactRequest());
-
-  axios
-    .post('/tasks', contact)
-    .then(({ data }) => dispatch(addContactSuccess(data)))
-    .catch(error => dispatch(addContactError(error.message)));
+  return func;
 };
 
-// DELETE @ /tasks/:id
-const deleteContact = contactId => dispatch => {
-  dispatch(deleteContactRequest());
+const isDublicate = ({ name, number }, contacts) => {
+  const normalizedName = name.toLowerCase();
+  const result = contacts.find(contact => {
+    return (
+      normalizedName === contact.name.toLowerCase() && number === contact.number
+    );
+  });
 
-  axios
-    .delete(`/tasks/${contactId}`)
-    .then(() => dispatch(deleteContactSuccess(contactId)))
-    .catch(error => dispatch(deleteContactError(error.message)));
+  return Boolean(result);
 };
 
-// PATCH @ /tasks/:id
-const toggleCompleted =
-  ({ id, completed }) =>
-  dispatch => {
-    const update = { completed };
-
-    dispatch(toggleCompletedRequest());
-
-    axios
-      .patch(`/tasks/${id}`, update)
-      .then(({ data }) => dispatch(toggleCompletedSuccess(data)))
-      .catch(error => dispatch(toggleCompletedError(error.message)));
+export const addContact = data => {
+  const func = async (dispatch, getState) => {
+    const { contacts } = getState();
+    if (isDublicate(data, contacts.items)) {
+      return alert(`${data.name} ${data.number} is already exist`);
+    }
+    try {
+      dispatch(actions.addContactLoading());
+      const result = await contactsApi.addContact(data);
+      dispatch(actions.addContactSuccess(result));
+    } catch (error) {
+      const { message } = error;
+      dispatch(actions.addContactError(message));
+    }
   };
 
-const contactsOperations = {
-  fetchContacts,
-  addContact,
-  deleteContact,
-  toggleCompleted,
+  return func;
 };
-export default contactsOperations;
+
+export const removeContact = id => {
+  const func = async dispatch => {
+    try {
+      dispatch(actions.removeContactLoading());
+      await contactsApi.removeContact(id);
+      dispatch(actions.removeContactSuccess(id));
+    } catch (error) {
+      const { message } = error;
+      dispatch(actions.removeContactError(message));
+    }
+  };
+
+  return func;
+};

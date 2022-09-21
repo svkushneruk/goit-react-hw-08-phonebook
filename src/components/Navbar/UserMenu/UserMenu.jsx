@@ -1,10 +1,11 @@
-import { NavLink } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import { getAuth } from 'redux/auth/auth-selectors';
 
 const UserMenu = () => {
+  const { email } = useSelector(getAuth);
   return (
     <div>
-      <NavLink to="/register">Register</NavLink>|
-      <NavLink to="/login">Login</NavLink>
+      <span>{email}</span> |<button type="button">LogOut</button>
     </div>
   );
 };

@@ -1,23 +1,27 @@
-import { useDeleteContactMutation } from 'redux/contacts/contactsSlice';
-import { Notify } from 'notiflix/build/notiflix-notify-aio';
+// import { Notify } from 'notiflix/build/notiflix-notify-aio';
+import { useDispatch } from 'react-redux';
+
+import { removeContact } from '../../redux/contacts/contacts-operations';
 
 import css from 'components/ContactItem/ContactItem.module.css';
 
 const ContactItem = ({ contact }) => {
-  const [deleteContact, { isLoading, isSuccess }] = useDeleteContactMutation();
+  const dispatch = useDispatch();
 
+  const demoveContact = contactId => {
+    dispatch(removeContact(contactId));
+  };
   return (
     <li className={css.list__item}>
       <p className={css.list__text}>
-        {contact.name}: {contact.phone}
+        {contact.name}: {contact.number}
       </p>
       <button
         className={css.list__btn}
-        onClick={() => deleteContact(contact.id)}
+        onClick={() => demoveContact(contact.id)}
       >
-        {isLoading ? 'Deleting...' : 'Delete'}
+        Delete
       </button>
-      {isSuccess && Notify.success('Contact deleted')}
     </li>
   );
 };

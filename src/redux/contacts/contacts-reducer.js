@@ -3,7 +3,7 @@ import { createReducer } from '@reduxjs/toolkit';
 import actions from './contacts-actions';
 
 const initialState = {
-  items: [{ id: '1', name: 'Alex', number: '1234567' }],
+  items: [],
   loading: false,
   error: null,
 };

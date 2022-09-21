@@ -1,5 +1,10 @@
 import { Routes, Route } from 'react-router-dom';
 
+import { useEffect } from 'react';
+import { useDispatch } from 'react-redux';
+
+import { current } from 'redux/auth/auth-operations';
+
 import PrivateRoute from './PrivateRoute/PrivateRoute';
 import PublicRoute from './PublicRoute/PublicRoute';
 import Navbar from './Navbar/Navbar';
@@ -12,6 +17,11 @@ import NotFoundPage from 'pages/NoFoundPage/NotFoundPage';
 import Container from './Container';
 
 const App = () => {
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(current());
+  }, [dispatch]);
   return (
     <Container>
       <Navbar />

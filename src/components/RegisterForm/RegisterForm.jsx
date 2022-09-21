@@ -1,8 +1,8 @@
 import useForm from 'shared/hooks/useForm';
 
-import styles from './register-form.module.css';
-
 import { initialState } from '../RegisterForm/initialState';
+
+import { Group, Label, Input, Button } from './register-form.styled';
 
 const RegisterForm = ({ onSubmit }) => {
   const { state, handleChange, handleSubmit } = useForm({
@@ -14,49 +14,40 @@ const RegisterForm = ({ onSubmit }) => {
 
   return (
     <form onSubmit={handleSubmit}>
-      <div className={styles.group}>
-        <label className={styles.label} htmlFor="">
-          Имя пользователя:
-        </label>
-        <input
+      <Group>
+        <Label htmlFor="">User name:</Label>
+        <Input
           value={name}
           name="name"
           onChange={handleChange}
-          className={styles.input}
           type="text"
-          placeholder="Введите имя пользователя"
+          placeholder="Enter User name"
           required
         />
-      </div>
-      <div className={styles.group}>
-        <label className={styles.label} htmlFor="">
-          Email пользователя:
-        </label>
-        <input
+      </Group>
+      <Group>
+        <Label htmlFor="">User email:</Label>
+        <Input
           value={email}
           name="email"
           onChange={handleChange}
-          className={styles.input}
           type="email"
-          placeholder="Введите email пользователя"
+          placeholder="Enter User email"
         />
-      </div>
-      <div className={styles.group}>
-        <label className={styles.label} htmlFor="">
-          Пароль пользователя:
-        </label>
-        <input
+      </Group>
+      <Group>
+        <Label htmlFor="">User password:</Label>
+        <Input
           value={password}
           name="password"
           onChange={handleChange}
-          className={styles.input}
           type="password"
-          placeholder="Введите пароль пользователя"
+          placeholder="Enter User password"
         />
-      </div>
-      <div className={styles.group}>
-        <button type="submit">Регистрация</button>
-      </div>
+      </Group>
+      <Group>
+        <Button type="submit">Sign up</Button>
+      </Group>
     </form>
   );
 };

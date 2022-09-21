@@ -1,13 +1,10 @@
-import { NavLink } from 'react-router-dom';
+import { Nav, LinkNav } from '../NavbarMenu/NavbarMenu.styled';
 
 const Navbar = () => {
   return (
-    <div>
-      {/* <NavLink to="/">HomePage</NavLink> */}
-      {/* <NavLink to="/register">Register Page</NavLink>
-      <NavLink to="/login">Login Page</NavLink> */}
-      <NavLink to="/contacts">Contacts Page</NavLink>
-    </div>
+    <Nav>
+      <LinkNav to="/contacts">Contacts Page</LinkNav>
+    </Nav>
   );
 };
 

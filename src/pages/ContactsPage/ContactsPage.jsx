@@ -9,6 +9,8 @@ import { ContactList } from 'components/ContactList/ContactList';
 import css from 'components/App.module.css';
 import { fetchContacts, addContact } from 'redux/contacts/contacts-operations';
 
+import { Section, PageTitle } from './ContactsPage.styled';
+
 const ContactsPage = () => {
   const contacts = useSelector(getFilteredContacts);
   const filter = useSelector(getFilterValue);
@@ -46,8 +48,8 @@ const ContactsPage = () => {
   };
 
   return (
-    <div className={css.app}>
-      <h1>Phonebook</h1>
+    <Section className={css.app}>
+      <PageTitle>Phonebook</PageTitle>
       <ContactForm onSubmit={handleAddContact} />
 
       <h2>Contacts</h2>
@@ -57,7 +59,7 @@ const ContactsPage = () => {
       {contacts && (
         <ContactList contacts={contacts} onDeleteContact={removeContact} />
       )}
-    </div>
+    </Section>
   );
 };
 

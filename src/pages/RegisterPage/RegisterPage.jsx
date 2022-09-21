@@ -4,19 +4,25 @@ import { signup } from 'redux/auth/auth-operations';
 import RegisterForm from 'components/RegisterForm/RegisterForm';
 import { getAuthError } from './../../redux/auth/auth-selectors';
 
+import { Section, PageTitle } from './RegisterPage.styled';
+
+import ErrorMessage from 'components/ErrorMessage/ErrorMessage';
+
 export default function RegisterView() {
   const dispatch = useDispatch();
-  const { status, message } = useSelector(getAuthError);
+  const { status } = useSelector(getAuthError);
 
   const onRegister = data => {
     dispatch(signup(data));
   };
 
   return (
-    <div>
-      <h1>Страница регистрации</h1>
+    <Section>
+      <PageTitle>Registration page</PageTitle>
       <RegisterForm onSubmit={onRegister} />
-      {status && <p style={{ color: 'red' }}>{message}</p>}
-    </div>
+      {status && (
+        <ErrorMessage message="Sign up... Enter your name, email and password." />
+      )}
+    </Section>
   );
 }

@@ -4,4 +4,20 @@
   justify-content: space-between;
   padding-top: 15px;
   padding-bottom: 15px;
+  border-bottom: 1px solid grey;
 }
+
+.logoLink {
+  text-decoration: none;
+  font-size: 24px;  
+  color: rgb(65, 135, 216);
+  transition: color 0.3s easy-in ;
+}
+
+.logoLink:hover,
+.logoLink:focus {
+  
+  color: rgb(118, 177, 229)
+}
+
+

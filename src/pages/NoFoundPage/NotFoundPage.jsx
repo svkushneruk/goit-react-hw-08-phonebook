@@ -1,5 +1,10 @@
+import { Title, NotFoundLink } from './NotFoundPage.styled';
 const NotFoundPage = () => {
-  return <h1>Not Foun Page</h1>;
+  return (
+    <Title>
+      Page not found. Return to the <NotFoundLink>main page</NotFoundLink>
+    </Title>
+  );
 };
 
 export default NotFoundPage;

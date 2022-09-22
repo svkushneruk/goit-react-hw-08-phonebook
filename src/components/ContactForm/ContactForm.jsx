@@ -1,7 +1,13 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { nanoid } from 'nanoid';
-import css from 'components/ContactForm/ContactForm.module.css';
+
+import {
+  Form,
+  FormInput,
+  FormLabel,
+  FormBtn,
+} from 'components/ContactForm/ContactForm.styled';
 
 const ContactForm = ({ onSubmit }) => {
   const [name, setName] = useState('');
@@ -36,12 +42,9 @@ const ContactForm = ({ onSubmit }) => {
   };
 
   return (
-    <form onSubmit={handleSubmit} className={css.form}>
-      <label htmlFor={nameInputId} className={css.form__label}>
-        Name
-      </label>
-      <input
-        className={css.form__input}
+    <Form onSubmit={handleSubmit}>
+      <FormLabel htmlFor={nameInputId}>Name</FormLabel>
+      <FormInput
         type="text"
         name="name"
         pattern="^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
@@ -51,11 +54,8 @@ const ContactForm = ({ onSubmit }) => {
         value={name}
         id={nameInputId}
       />
-      <label htmlFor={numberInputId} className={css.form__label}>
-        Number
-      </label>
-      <input
-        className={css.form__input}
+      <FormLabel htmlFor={numberInputId}>Number</FormLabel>
+      <FormInput
         type="tel"
         name="number"
         pattern="\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}"
@@ -65,10 +65,8 @@ const ContactForm = ({ onSubmit }) => {
         value={number}
         id={numberInputId}
       />
-      <button type="submit" className={css.form__btn}>
-        Add contact
-      </button>
-    </form>
+      <FormBtn type="submit">Add contact</FormBtn>
+    </Form>
   );
 };
 

@@ -6,10 +6,11 @@ import { getFilteredContacts } from 'redux/contacts/contacts-selectors';
 import ContactForm from 'components/ContactForm/ContactForm';
 import { Filter } from 'components/Filter/Filter';
 import { ContactList } from 'components/ContactList/ContactList';
-import css from 'components/App.module.css';
+
+// import css from 'components/App.module.css';
 import { fetchContacts, addContact } from 'redux/contacts/contacts-operations';
 
-import { Section, PageTitle } from './ContactsPage.styled';
+import { Section, PageTitle, PageSubtitle } from './ContactsPage.styled';
 
 const ContactsPage = () => {
   const contacts = useSelector(getFilteredContacts);
@@ -48,11 +49,12 @@ const ContactsPage = () => {
   };
 
   return (
-    <Section className={css.app}>
+    <Section>
       <PageTitle>Phonebook</PageTitle>
+      <PageSubtitle>Add new contact</PageSubtitle>
       <ContactForm onSubmit={handleAddContact} />
 
-      <h2>Contacts</h2>
+      <PageSubtitle>Your Contacts</PageSubtitle>
 
       <Filter filterValue={filter} onChange={onChangeFilterValue} />
 

@@ -3,7 +3,7 @@ import { useDispatch } from 'react-redux';
 
 import { removeContact } from '../../redux/contacts/contacts-operations';
 
-import css from 'components/ContactItem/ContactItem.module.css';
+import { ListItem, ListGroup, ListBtn } from './ContactItem.styled';
 
 const ContactItem = ({ contact }) => {
   const dispatch = useDispatch();
@@ -12,17 +12,13 @@ const ContactItem = ({ contact }) => {
     dispatch(removeContact(contactId));
   };
   return (
-    <li className={css.list__item}>
-      <p className={css.list__text}>
-        {contact.name}: {contact.number}
-      </p>
-      <button
-        className={css.list__btn}
-        onClick={() => demoveContact(contact.id)}
-      >
-        Delete
-      </button>
-    </li>
+    <ListItem>
+      <ListGroup>
+        <p>{contact.name}</p>
+        <p>{contact.number}</p>
+      </ListGroup>
+      <ListBtn onClick={() => demoveContact(contact.id)}>Delete</ListBtn>
+    </ListItem>
   );
 };
 

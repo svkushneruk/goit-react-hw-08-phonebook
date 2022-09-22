@@ -1,12 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import css from 'components/Filter/Filter.module.css';
+
+import { FilterWrapper, FilterLable, FilterInput } from './Filter.styled';
 
 export const Filter = ({ filterValue, onChange }) => (
-  <div className={css.filter}>
-    <label className={css.filter__label}>Find contacts by name</label>
-    <input
-      className={css.filter__input}
+  <FilterWrapper>
+    <FilterLable>Find contacts by name</FilterLable>
+    <FilterInput
       type="text"
       name="filter"
       pattern="^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
@@ -15,7 +15,7 @@ export const Filter = ({ filterValue, onChange }) => (
       onChange={onChange}
       value={filterValue}
     />
-  </div>
+  </FilterWrapper>
 );
 
 Filter.propTypes = {

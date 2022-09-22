@@ -1,14 +1,15 @@
 import React from 'react';
 import ContactItem from 'components/ContactItem/ContactItem';
-import css from 'components/ContactList/ContactList.module.css';
+
+import { List } from './ContactList.styled';
 import PropTypes from 'prop-types';
 
 export const ContactList = ({ contacts }) => (
-  <ul className={css.list}>
+  <List>
     {contacts.map(contact => (
       <ContactItem key={contact.id} contact={contact} />
     ))}
-  </ul>
+  </List>
 );
 
 ContactList.propTypes = {

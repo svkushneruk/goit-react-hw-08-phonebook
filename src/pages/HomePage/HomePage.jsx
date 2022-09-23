@@ -1,4 +1,7 @@
 import React from 'react';
+import { Navigate } from 'react-router-dom';
+
+import useAuth from 'shared/hooks/useAuth';
 
 const styles = {
   container: {
@@ -14,15 +17,23 @@ const styles = {
   },
 };
 
-const HomeView = () => (
-  <div style={styles.container}>
-    <h1 style={styles.title}>
-      Log in to your profile to view your contact list{' '}
-      <span role="img" aria-label="Иконка приветствия">
-        💁‍♀️
-      </span>
-    </h1>
-  </div>
-);
+const HomeView = () => {
+  const isLogin = useAuth();
+
+  if (isLogin) {
+    return <Navigate to="/contacts" />;
+  }
+
+  return (
+    <div style={styles.container}>
+      <h1 style={styles.title}>
+        Log in to your profile to view your contact list{' '}
+        <span role="img" aria-label="Иконка приветствия">
+          💁‍♀️
+        </span>
+      </h1>
+    </div>
+  );
+};
 
 export default HomeView;
